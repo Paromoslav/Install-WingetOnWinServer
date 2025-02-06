@@ -17,7 +17,7 @@ Add-AppxPackage -Path '.\Microsoft.VCLibs.x64.14.00.Desktop.appx' -Verbose
 # WinGet
 Write-Host 'Downloading and Installing WinGet'
 $WingetReleases = ConvertFrom-Json -InputObject (Invoke-WebRequest -Uri 'https://api.github.com/repos/microsoft/winget-cli/releases' -UseBasicParsing)
-$WingetLatestRelease = $WingetReleases.Where{-not $_.draft -and -not $_.prerelease}[0]
+$WingetLatestRelease = $WingetReleases.Where{(-not $_.draft) -and (-not $_.prerelease)}[0]
 $WingetMsixBundle = $WingetLatestRelease.assets.Where{$_.name -like '*.msixbundle'}
 Invoke-WebRequest -Uri ($WingetMsixBundle.browser_download_url) -OutFile ($WingetMsixBundle.name) -UseBasicParsing
 $WingetLicense = $WingetLatestRelease.assets.Where{$_.name -like '*license*'}
